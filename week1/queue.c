@@ -1,4 +1,4 @@
-// Stack ADO implementation ... COMP9024 25T0
+// Queue ADO implementation ... COMP9024 25T0
 
 #include "queue.h"
 #include <assert.h>
@@ -13,34 +13,34 @@ typedef struct
 static queueRep queueObject; // defines the Data Object
 
 void QueueInit()
-{ // set up empty stack
-    queueObject.front = 0;
-    queueObject.rear = -1;
+{ // set up empty queue
+    queueObject.front = -1;
+    queueObject.rear = 0;
 }
 
 int QueueIsEmpty()
-{ // check whether stack is empty
-    return (queueObject.rear == -1);
+{ // check whether queue is empty
+    return (queueObject.front == -1);
 }
 
 void QueueEnqueue(char v)
-{ // insert int on front of queue
-    assert((queueObject.rear - queueObject.front) % MAXITEMS < MAXITEMS-1);
-    //    queueObject.front=(queueObject.front+1)%MAXITEMS;
-    queueObject.rear = (queueObject.rear + 1) % MAXITEMS;
+{ // Enqueue char in front of queue
+    assert((queueObject.front - queueObject.rear) % MAXITEMS < MAXITEMS-1);
+    // queueObject.front=(queueObject.front+1)%MAXITEMS;
+    queueObject.front = (queueObject.front + 1) % MAXITEMS;
 
-    int i = queueObject.rear;
+    int i = queueObject.front;
     queueObject.item[i] = v;
 }
 
 char QueueDequeue()
-{ // remove int from top of stack
-    assert(queueObject.rear > -1);
-    int i = queueObject.front;
+{ // remove char from front of queue
+    assert(queueObject.front > -1);
+    int i = queueObject.rear;
     char v = queueObject.item[i];
-    if (queueObject.front == queueObject.rear)
-        queueObject.rear = -1;
+    if (queueObject.rear == queueObject.front)
+        queueObject.front = -1;
     else
-        queueObject.front = (queueObject.front + 1) % MAXITEMS;
+        queueObject.rear = (queueObject.rear + 1) % MAXITEMS;
     return v;
 }
