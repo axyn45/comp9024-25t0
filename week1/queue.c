@@ -23,7 +23,7 @@ int QueueIsEmpty()
     return (queueObject.rear == -1);
 }
 
-void QueuePush(char v)
+void QueueEnqueue(char v)
 { // insert int on front of queue
     assert((queueObject.rear - queueObject.front) % MAXITEMS < MAXITEMS-1);
     //    queueObject.front=(queueObject.front+1)%MAXITEMS;
@@ -33,7 +33,7 @@ void QueuePush(char v)
     queueObject.item[i] = v;
 }
 
-char QueuePop()
+char QueueDequeue()
 { // remove int from top of stack
     assert(queueObject.rear > -1);
     int i = queueObject.front;
