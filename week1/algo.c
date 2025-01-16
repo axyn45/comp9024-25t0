@@ -23,12 +23,12 @@ int main()
                     if (i == l || j == l || k == l)
                         continue;
                     res[3] = pool[l];
-                    // printf("%s\n", res);
-                    for (int m = 0; m < 4; m++)
-                    {
-                        printf("%c", res[m]);
-                    }
-                    printf("\n");
+                    printf("%s\n", res);
+                    // for (int m = 0; m < 4; m++)
+                    // {
+                    //     printf("%c", res[m]);
+                    // }
+                    // printf("\n");
                 }
             }
         }
