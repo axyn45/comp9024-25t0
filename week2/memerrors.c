@@ -77,7 +77,7 @@ void f3(void)
     assert(cp != NULL);
     copy(ar, cp, 3);
     print(cp, 3);
-    free(cp);
+    // free(cp);
 }
 
 void f4(void)
@@ -111,7 +111,7 @@ void f6(void)
     copy(ar, cp, 2);
     print(cp, 2);
     // free(ar);
-    free(cp);
+    // free(cp);
 }
 
 void f7(void)
@@ -133,8 +133,10 @@ void f8(void)
     *cp = 1.66667;
     float a[1] = {2.33333};
     swap(&a[0], cp);
-    free(cp);
+    // free(cp);
     printf("%5.2f %5.2f\n", a[0], *cp);
+    // fix
+    free(cp);
 }
 
 int main(void)
