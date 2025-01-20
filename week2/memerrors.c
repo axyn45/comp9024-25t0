@@ -55,17 +55,14 @@ void f1(void)
     *c = 24.9;
     swap(&a, c);
     printf("%5.2f %5.2f\n", a, *c);
-    // fix
-    free(c);
+    free(c); // memory leak fix
 }
 
 void f2(void)
 {
     float ar[3] = {1.1, 2.2, 3.3};
     float *cp = malloc(3 * sizeof(float));
-    // fix
-    assert(cp != NULL);
-
+    assert(cp != NULL); // unchecked malloc fix
     copy(ar, cp, 3);
     print(cp, 3);
 }
@@ -77,6 +74,7 @@ void f3(void)
     assert(cp != NULL);
     copy(ar, cp, 3);
     print(cp, 3);
+    // double free fix
     // free(cp);
 }
 
@@ -86,6 +84,7 @@ void f4(void)
     float *cp = malloc(2 * sizeof(float));
     assert(cp != NULL);
     copy(ar, cp, 2);
+    // buffer overflow fix
     // printf("%5.2f %5.2f\n", cp[1], cp[2]);
     printf("%5.2f %5.2f\n", cp[0], cp[1]);
 
@@ -97,6 +96,7 @@ void f5(void)
     float ar[3] = {1.2, 0.3, -1.4};
     float *cp = malloc(3 * sizeof(float));
     assert(cp != NULL);
+    // uninitialised read fix
     // copy(ar, cp, 2);
     copy(ar, cp, 3);
 
@@ -110,13 +110,14 @@ void f6(void)
     assert(cp != NULL);
     copy(ar, cp, 2);
     print(cp, 2);
+    // invalid free fix
     // free(ar);
-    // free(cp);
 }
 
 void f7(void)
 {
     float a = 1.1 * 1.2;
+    // no memory allocated fix
     // float *c;
     float *c = malloc(sizeof(float));
     assert(c != NULL);
@@ -133,7 +134,8 @@ void f8(void)
     *cp = 1.66667;
     float a[1] = {2.33333};
     swap(&a[0], cp);
-    // free(cp);
+    // dangling pointer
+    // move free(cp); to end of block
     printf("%5.2f %5.2f\n", a[0], *cp);
     // fix
     free(cp);
