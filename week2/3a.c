@@ -13,8 +13,8 @@ int main()
 
 int *makeArrayOfInts()
 {
-    static int arr[1000];
-    //    arr=(int*)malloc(sizeof(int)*1000);
+    // static int arr[1000];
+    int *arr=(int*)malloc(sizeof(int)*1000);
     int i;
     for (i = 0; i < 1000; i++)
     {
