@@ -1,14 +1,14 @@
 CC      = gcc
 CFLAGS  = -Wall -Werror -std=c11
 
-graphAnalyser : graphAnalyser.o Graph.o
-	$(CC) $(CFLAGS) -o graphAnalyser graphAnalyser.o Graph.o
+connectedComponents : connectedComponents.o graphCC.o
+	$(CC) $(CFLAGS) -o connectedComponents connectedComponents.o graphCC.o
 
-graphAnalyser.o : graphAnalyser.c Graph.h
-	$(CC) $(CFLAGS) -c graphAnalyser.c
+connectedComponents.o : connectedComponents.c graphCC.h
+	$(CC) $(CFLAGS) -c connectedComponents.c
 
-Graph.o : Graph.c Graph.h
-	$(CC) $(CFLAGS) -c Graph.c
+graphCC.o : graphCC.c graphCC.h
+	$(CC) $(CFLAGS) -c graphCC.c
 
 clean : 
-	rm -f *.o graphAnalyser
+	rm -f *.o connectedComponents

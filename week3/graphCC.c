@@ -6,6 +6,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+bool dfs(Graph g, Vertex src, Vertex dest, int *visit);
+void dfsNewComponent(Graph g, Vertex src, int newComp, int *visit);
+
+
 typedef struct GraphRep {
     int **edges;  // adjacency matrix
     int nV;       // #vertices
@@ -53,20 +57,24 @@ void insertEdge(Graph g, Edge e) {
         g->edges[e.w][e.v] = 1;
         g->nE++;
     }
+
     if (g->cc[e.v] != g->cc[e.w]) {
         int greater = g->cc[e.v] > g->cc[e.w] ? g->cc[e.v] : g->cc[e.w];
         int lesser = g->cc[e.v] < g->cc[e.w] ? g->cc[e.v] : g->cc[e.w];
         int max = -1;
         for (int i = 0; i < g->nV; i++) {
+            if (g->cc[i] > max)
+                max = g->cc[i];
             if (g->cc[i] == greater)
                 g->cc[i] = lesser;
-            else if (g->cc[i] > max)
-                max = g->cc[i];
+            
         }
+        // printf("max %d\n",max);
         for (int i = 0; i < g->nV; i++) {
             if (g->cc[i] == max) g->cc[i] = greater;
         }
     }
+    // showComponents(g);
 }
 
 void removeEdge(Graph g, Edge e) {
@@ -90,9 +98,14 @@ void removeEdge(Graph g, Edge e) {
         for (int i = 0; i < g->nV; i++) {
             if (g->cc[i] > max) max = g->cc[i];
         }
-        dfsNewComponent(g, e.w, max, visit);
+        dfsNewComponent(g, e.w, max+1, visit);
     }
+    // else{
+    //     printf("\n----%d %d connected\n",e.v,e.w);
+    // }
     free(visit);
+    // showComponents(g);
+
 }
 
 bool adjacent(Graph g, Vertex v, Vertex w) {

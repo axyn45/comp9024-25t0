@@ -29,3 +29,5 @@ Graph deleteEdges(Graph g, Edge e);  // delete all edges from g that have at
 Graph copyGraph(
     Graph g);  // return a newly created graph that is an exact copy of g
 bool graphIsEmpty(Graph g);  // check if graph g has no edges
+
+void showComponents(Graph g);
