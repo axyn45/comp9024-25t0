@@ -15,22 +15,20 @@ bool isValidInt(char a[]) {
     return true;
 }
 
-#include <stdio.h>
-
-#define SIZE 6
-
-void inssort(int **arr, int start, int size, int key) {
+void inssort(int **arr, int start, int size) {
     int *temp;
-    // int i;
-    // int
-    // int *init = malloc(sizeof(int) * 3);
-    // init[0] = 0;
-    // init[1] = 0;
-    // init[2] = 0;
-    int max = 0;
+
+    int max;
+    // int key = 1;
     for (int i = start; i < size; i++) {
-        for (int j = i; j < size; j++) {
-            if (arr[j][key] > arr[max][key]) {
+        max = i;
+        for (int j = i + 1; j < size; j++) {
+            if (arr[j][1] > arr[max][1]) {
+                max = j;
+            } else if (arr[j][1] == arr[max][1] && arr[j][2] > arr[max][2]) {
+                max = j;
+            } else if (arr[j][1] == arr[max][1] && arr[j][2] == arr[max][2] &&
+                       arr[j][0] < arr[max][0]) {
                 max = j;
             }
         }
@@ -38,25 +36,7 @@ void inssort(int **arr, int start, int size, int key) {
         arr[i] = arr[max];
         arr[max] = temp;
     }
-
-    // for (int i = 1; i < SIZE; i++) {
-    //     int element = arr[i][key];  // for this element ...
-    //     int j = i - 1;
-    //     while (j >= 0 &&
-    //            arr[j][key] > element) {  // ... work down the ordered list
-    //         // numbers[j + 1] = numbers[j];  // ... moving elements up
-
-    //         j--;
-    //     }
-    //     numbers[j + 1] = element;  // and insert in correct position
-    // }
-
-    // for (i = 0; i < SIZE; i++) printf("%d\n", numbers[i]);
-    // // free(init);
-    // return 0;
 }
-
-// bool cliqueExisted(int )
 
 int main() {
     char buffer[32];
@@ -72,8 +52,6 @@ int main() {
         outScore[i] = 0;
         inScore[i] = 0;
     }
-
-    // int cliques = 0;
 
     while (true) {
         printf("Enter a webpage: ");
@@ -92,7 +70,7 @@ int main() {
         // degreeTrack[newEdge.v]++;
         // degreeTrack[newEdge.w]++;
     }
-    printf("Done.\n");
+    printf("Done.\n\n");
 
     int **ranking = malloc(sizeof(int *) * webNum);
     for (int i = 0; i < webNum; i++) {
@@ -106,51 +84,12 @@ int main() {
             }
         }
     }
-    inssort(ranking, 0, webNum, 1);
-    int l_size;
-    for (int i = 0; i < webNum; i++) {
-        l_size = 0;
-        for (int j = i + 1; i < webNum; i++) {
-            if (ranking[i][1] != ranking[j][1]) break;
-            l_size++;
-        }
-        if (l_size) inssort(ranking, i, l_size, 2);
-    }
+    inssort(ranking, 0, webNum);
+    // inssort(ranking, 0, webNum, 1);
 
     printf("Webpage ranking:\n");
     for (int i = 0; i < webNum; i++) {
         printf("%d has %d inbound links and scores %d on inbound links.\n",
                ranking[i][0], ranking[i][1], ranking[i][2]);
     }
-    // for(int i=0;i<numOfE;i++){
-
-    // }
-
-    // for (int i = 0; i < numOfV; i++) {
-    //     printf("Degree of node %d: %d\n", i, degreeTrack[i]);
-    // }
-    // // int **cqMtx=malloc(sizeof(int*)*1000);
-    // // for(int i=0;i<1000;i++){
-    // //     cqMtx[i]=malloc(sizeof(int)*3);
-    // // }
-    // for (int i = 0; i < numOfV; i++) {
-    //     for (int j = 0; j < numOfV; j++) {
-    //         if (i == j) continue;
-    //         // if(j<i)
-    //         //     break;
-    //         for (int k = 0; k < numOfV; k++) {
-    //             if (i == k || j == k) continue;
-    //             // if(k<j||k<i)
-    //             //     break;
-    //             if (adjacent(graph, i, j) && adjacent(graph, j, k) &&
-    //                 adjacent(graph, i, k)) {
-    //                 cliques++;
-    //                 if (cliques == 1) {
-    //                     printf("3-cliques:\n");
-    //                 }
-    //                 if (k > j && j > i) printf("%d-%d-%d\n", i, j, k);
-    //             }
-    //         }
-    //     }
-    // }
 }
