@@ -19,7 +19,7 @@ bool isValidInt(char a[]) {
 
 #define SIZE 6
 
-void inssort(int **arr, int size, int key) {
+void inssort(int **arr, int start, int size, int key) {
     int *temp;
     // int i;
     // int
@@ -28,7 +28,7 @@ void inssort(int **arr, int size, int key) {
     // init[1] = 0;
     // init[2] = 0;
     int max = 0;
-    for (int i = 0; i < size; i++) {
+    for (int i = start; i < size; i++) {
         for (int j = i; j < size; j++) {
             if (arr[j][key] > arr[max][key]) {
                 max = j;
@@ -84,6 +84,7 @@ int main() {
         scanf("%31s", buffer);
         if (!isValidInt(buffer)) break;
         newEdge.w = atoi(buffer);
+        // printf("---- %d %d\n", newEdge.v, newEdge.w);
 
         insertEdge(g, newEdge);
         outScore[newEdge.v]++;
@@ -98,19 +99,28 @@ int main() {
         ranking[i] = malloc(sizeof(int) * 3);
         ranking[i][0] = i;
         ranking[i][1] = inScore[i];
-        ranking[i][1] = 0;
+        ranking[i][2] = 0;
         for (int j = 0; j < webNum; j++) {
             if (adjacent(g, j, i)) {
-                ranking[i][1] += outScore[j];
+                ranking[i][2] += outScore[j];
             }
         }
     }
-    inssort(ranking, webNum, 1);
+    inssort(ranking, 0, webNum, 1);
+    int l_size;
+    for (int i = 0; i < webNum; i++) {
+        l_size = 0;
+        for (int j = i + 1; i < webNum; i++) {
+            if (ranking[i][1] != ranking[j][1]) break;
+            l_size++;
+        }
+        if (l_size) inssort(ranking, i, l_size, 2);
+    }
 
     printf("Webpage ranking:\n");
     for (int i = 0; i < webNum; i++) {
         printf("%d has %d inbound links and scores %d on inbound links.\n",
-               ranking[0], ranking[1], ranking[2]);
+               ranking[i][0], ranking[i][1], ranking[i][2]);
     }
     // for(int i=0;i<numOfE;i++){
 
