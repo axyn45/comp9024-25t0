@@ -92,4 +92,5 @@ int main() {
         printf("%d has %d inbound links and scores %d on inbound links.\n",
                ranking[i][0], ranking[i][1], ranking[i][2]);
     }
+    freeGraph(g);
 }
