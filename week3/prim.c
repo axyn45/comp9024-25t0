@@ -42,9 +42,15 @@ int main() {
         // printf("---- %d %d\n", newEdge.v, newEdge.w);
 
         insertEdge(g, newEdge);
+        int temp;
+        temp = newEdge.v;
+        newEdge.v = newEdge.w;
+        newEdge.w = temp;
+        insertEdge(g, newEdge);
         // countE++;
     }
-    printf("Done.\n\n");
+    printf("Done.\n");
+    // showGraph(g);
 
     Graph mst = newGraph(V);
     Set usedV = newSet();
@@ -54,6 +60,7 @@ int main() {
     scanf("%31s", buffer);
     assert(isValidInt(buffer));
     addToSet(usedV, atoi(buffer));
+    printf("\n");
 
     int **unusedE = malloc(V * sizeof(int *));
     for (int i = 0; i < V; i++) {
@@ -82,6 +89,7 @@ int main() {
                     }
                 }
         }
+        // if (minE.weight == INT_MAX) continue;
         insertEdge(mst, minE);
         addToSet(usedV, minE.w);
         unusedE[minE.v][minE.w] = 0;
