@@ -272,3 +272,107 @@ int TreeWidth(Tree t) {
     else
         return 1 + (nodeNum - 1) * 2;
 }
+
+// Tree standardDeleteTree(Tree t, Item it) {
+//     if (t != NULL) {
+//         if (it < data(t))
+//             left(t) = standardDeleteTree(left(t), it);
+//         else if (it > data(t))
+//             right(t) = standardDeleteTree(right(t), it);
+//         else {
+//             Tree new;
+//             if (left(t) == NULL && right(t) == NULL)
+//                 new = NULL;
+//             else if (left(t) ==
+//                      NULL)  // if only right subtree, make it the new root
+//                 new = right(t);
+//             else if (right(t) ==
+//                      NULL)  // if only left subtree, make it the new root
+//                 new = left(t);
+//             else  // left(t) != NULL and right(t) != NULL
+//             {
+//                 Tree left = t->left;
+//                 Tree right = t->right;
+//                 // TreeDelete(t, it);
+//                 if (left == NULL) return right;
+//                 if (right = NULL) return left;
+//                 // if (left == NULL && right == NULL) return NULL;
+//                 Tree minL = right;
+//                 while (minL->left) {
+//                     minL = minL->left;
+//                 }
+//                 minL->left = left;
+//                 new = right;
+//             }
+//             free(t);
+//             t = new;
+//         }
+//     }
+//     return t;
+// }
+
+// Tree AVLRebalance(Tree t) {
+//     int hL = TreeHeight(left(t));
+//     int hR = TreeHeight(right(t));
+//     if ((hL - hR) > 1) {
+//         if (it > data(left(t))) {
+//             left(t) = rotateLeft(left(t));
+//         }
+//         t = rotateRight(t);
+//     } else if ((hR - hL) > 1) {
+//         if (it < data(right(t))) {
+//             right(t) = rotateRight(right(t));
+//         }
+//         t = rotateLeft(t);
+//     }
+// }
+
+Tree deleteAVL(Tree t, Item it) {
+    if (t == NULL) return NULL;
+    if (it == data(t)) {
+        Tree new;
+        if (left(t) == NULL && right(t) == NULL)
+            new = NULL;
+        else if (left(t) ==
+                 NULL)  // if only right subtree, make it the new root
+            new = right(t);
+        else if (right(t) ==
+                 NULL)  // if only left subtree, make it the new root
+            new = left(t);
+        else  // left(t) != NULL and right(t) != NULL
+        {
+            Tree left = t->left;
+            Tree right = t->right;
+            Tree minL = right;
+            while (minL->left) {
+                minL = minL->left;
+            }
+            minL->left = left;
+            new = right;
+        }
+        free(t);
+        t = new;
+        return t;
+    };
+
+    if (it < data(t))
+        left(t) = deleteAVL(left(t), it);
+    else
+        right(t) = deleteAVL(right(t), it);
+
+    int hL = TreeHeight(left(t));
+    int hR = TreeHeight(right(t));
+    if ((hL - hR) > 1) {
+        if (it > data(left(t))) {
+            left(t) = rotateLeft(left(t));
+        }
+        t = rotateRight(t);
+    } else if ((hR - hL) > 1) {
+        if (it < data(right(t))) {
+            right(t) = rotateRight(right(t));
+        }
+        t = rotateLeft(t);
+    }
+
+    return t;
+}
