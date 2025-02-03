@@ -105,4 +105,49 @@ void showTreeR(Tree t, int depth) {
 
 void showTree(Tree t) { showTreeR(t, 0); }
 
-Tree TreeInsert(Tree t, Item it) {}
+Tree reArrangeRB(Tree t) {
+    if (left(t) && right(left(t)) && color(left(t)) == RED &&
+        color(right(left(t))) == RED) {
+        left(t) = rotateLeft(left(t));
+    } else if (right(t) && left(right(t)) && color(right(t)) == RED &&
+               color(left(right(t))) == RED) {
+        right(t) = rotateRight(right(t));
+    }
+
+    if (left(t) && left(left(t)) && color(left(t)) == RED &&
+        color(left(left(t))) == RED) {
+        t = rotateRight(t);
+        color(t) = BLACK;
+        color(right(t)) = RED;
+    } else if (right(t) && right(right(t)) && color(right(t)) == RED &&
+               color(right(right(t))) == RED) {
+        t = rotateLeft(t);
+        color(t) = BLACK;
+        color(left(t)) = RED;
+    }
+}
+
+Tree insertRB(Tree t, Item it) {
+    if (t == NULL)
+        return newNode(it);
+    else if (it == data(t))
+        return t;
+    if (color(t->left) == RED && color(t->right) == RED) {
+        color(left(t)) = BLACK;
+        color(right(t)) = BLACK;
+        color(t) = RED;
+    }
+    if (it < data(t)) {
+        left(t) = insertRB(left(t), it);
+        t = reArrangeRB(t);
+    } else {
+        right(t) = insertRB(right(t), it);
+        t = reArrangeRB(t);
+    }
+}
+
+Tree TreeInsert(Tree t, Item it) {
+    t = insertRB(t, it);
+    color(t) = BLACK;
+    return t;
+}
