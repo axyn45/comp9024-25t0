@@ -9,8 +9,10 @@
 typedef struct GraphRep {
     int **edges;  // adjacency matrix storing positive weights
                   // 0 if nodes not adjacent
-    int nV;  // #vertices
-    int nE;  // #edges
+    int nV;       // #vertices
+    int nE;       // #edges
+    int **adjList;
+    Vertex *vertices;
 } GraphRep;
 
 Graph newGraph(int V) {
@@ -26,10 +28,17 @@ Graph newGraph(int V) {
     g->edges = malloc(V * sizeof(int *));
     assert(g->edges != NULL);
     // allocate memory for each column and initialise with 0
+    g->adjList = malloc(sizeof(int *) * V);
     for (i = 0; i < V; i++) {
         g->edges[i] = calloc(V, sizeof(int));
         assert(g->edges[i] != NULL);
+        // g->vertices[i] = NULL;
+        g->adjList[i] = calloc(V + 1, sizeof(int));
+        assert(g->vertices);
+        // g->adjList[i][0]
     }
+    g->vertices = malloc(sizeof(Vertex) * V);
+    assert(g->vertices);
 
     return g;
 }
@@ -37,7 +46,7 @@ Graph newGraph(int V) {
 int numOfVertices(Graph g) { return g->nV; }
 
 // check if vertex is valid in a graph
-int validV(Graph g, Vertex v) { return (g != NULL && v >= 0 && v < g->nV); }
+int validV(Graph g, int v) { return (g != NULL && v >= 0 && v < g->nV); }
 
 void insertEdge(Graph g, Edge e) {
     assert(g != NULL && validV(g, e.v) && validV(g, e.w));
@@ -57,7 +66,7 @@ void removeEdge(Graph g, Edge e) {
     }
 }
 
-int adjacent(Graph g, Vertex v, Vertex w) {
+int adjacent(Graph g, int v, int w) {
     assert(g != NULL && validV(g, v) && validV(g, w));
 
     return g->edges[v][w];
@@ -72,7 +81,8 @@ void showGraph(Graph g) {
     for (i = 0; i < g->nV; i++)
         for (j = 0; j < g->nV; j++)
             if (g->edges[i][j] != 0)
-                printf("Edge %d - %d: %d\n", i, j, g->edges[i][j]);
+                printf("Edge %d(%d) - %d(%d)\n", i, g->vertices[i], j,
+                       g->vertices[j]);
 }
 
 void freeGraph(Graph g) {
@@ -81,5 +91,41 @@ void freeGraph(Graph g) {
     int i;
     for (i = 0; i < g->nV; i++) free(g->edges[i]);
     free(g->edges);
+    free(g->vertices);
+
     free(g);
+}
+
+void insertVertex(Graph g, int id, Vertex v) { g->vertices[id] = v; }
+
+int getVertexID(Graph g, Vertex v) {
+    for (int i = 0; i < g->nV; i++) {
+        if (g->vertices[i] == v) return v;
+    }
+    return -1;
+}
+
+int getVertexData(Graph g, int id) {
+    if (id >= g->nV) return -1;
+    return g->vertices[id];
+}
+
+void insertAdjList(Graph g, Edge e) {
+    if (e.weight <= 0) return;
+    g->adjList[e.v][g->adjList[e.v][0] + 1] = e.w;
+    g->adjList[e.v][0]++;
+}
+
+int maxLenFrom(Graph g, int id) {
+    if (g->adjList[id][0] == 0) return 1;
+    int maxLen = 1, t = 0;
+    for (int i = 0; i < g->adjList[id][0]; i++) {
+        // for (int j = 0; j < g->adjList[i][0]; j++) {
+        t = maxLenFrom(g, g->adjList[id][i + 1]);
+        if (maxLen < 1 + t) {
+            maxLen = 1 + t;
+        }
+        // }
+    }
+    return maxLen;
 }
