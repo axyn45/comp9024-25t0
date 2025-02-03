@@ -41,16 +41,16 @@ Tree rotateRight(Tree);
 Tree rotateLeft(Tree);
 
 // insert a new item into a tree
-Tree TreeInsert(Tree t, Item it) {
-    printf("Not yet implemented.\n");
-    printf("Returning a fixed tree instead:\n");
+// Tree TreeInsert(Tree t, Item it) {
+//     printf("Not yet implemented.\n");
+//     printf("Returning a fixed tree instead:\n");
 
-    Tree testTree = newNode(2);
-    color(testTree) = BLACK;
-    left(testTree) = newNode(1);
-    right(testTree) = newNode(3);
-    return testTree;
-}
+//     Tree testTree = newNode(2);
+//     color(testTree) = BLACK;
+//     left(testTree) = newNode(1);
+//     right(testTree) = newNode(3);
+//     return testTree;
+// }
 
 // check whether a key is in a Tree
 bool TreeSearch(Tree t, Item it) {
@@ -109,8 +109,9 @@ Tree reArrangeRB(Tree t) {
     if (left(t) && right(left(t)) && color(left(t)) == RED &&
         color(right(left(t))) == RED) {
         left(t) = rotateLeft(left(t));
-    } else if (right(t) && left(right(t)) && color(right(t)) == RED &&
-               color(left(right(t))) == RED) {
+    }
+    if (right(t) && left(right(t)) && color(right(t)) == RED &&
+        color(left(right(t))) == RED) {
         right(t) = rotateRight(right(t));
     }
 
@@ -119,12 +120,14 @@ Tree reArrangeRB(Tree t) {
         t = rotateRight(t);
         color(t) = BLACK;
         color(right(t)) = RED;
-    } else if (right(t) && right(right(t)) && color(right(t)) == RED &&
-               color(right(right(t))) == RED) {
+    }
+    if (right(t) && right(right(t)) && color(right(t)) == RED &&
+        color(right(right(t))) == RED) {
         t = rotateLeft(t);
         color(t) = BLACK;
         color(left(t)) = RED;
     }
+    return t;
 }
 
 Tree insertRB(Tree t, Item it) {
@@ -132,7 +135,8 @@ Tree insertRB(Tree t, Item it) {
         return newNode(it);
     else if (it == data(t))
         return t;
-    if (color(t->left) == RED && color(t->right) == RED) {
+    if (left(t) && right(t) && color(left(t)) == RED &&
+        color(right(t)) == RED) {
         color(left(t)) = BLACK;
         color(right(t)) = BLACK;
         color(t) = RED;
@@ -144,6 +148,7 @@ Tree insertRB(Tree t, Item it) {
         right(t) = insertRB(right(t), it);
         t = reArrangeRB(t);
     }
+    return t;
 }
 
 Tree TreeInsert(Tree t, Item it) {
