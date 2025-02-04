@@ -63,6 +63,7 @@ void freeLL(List L) {
     }
 }
 
+// append element to an LL at tail
 List appendLL(List L, int n) {
     if (!L) return makeNode(n);
     List tail = L;
@@ -71,6 +72,7 @@ List appendLL(List L, int n) {
     return L;
 }
 
+// display an LL in trail format
 void showTrail(List L) {
     if (!L) return;
     List t = L;

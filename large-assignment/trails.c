@@ -5,6 +5,7 @@
 // #include "List.h"
 #include "WGraph.h"
 
+// return number of digits of <a>
 int numOfDigits(int a) {
     if (a < 0) return 0;
     int n = 0, t = a;
@@ -15,12 +16,11 @@ int numOfDigits(int a) {
     return n;
 }
 
+// return true if <b> is a valid successor of <a>, vice versa
 bool isValidSuccessor(int a, int b) {
     if (a >= b) return false;
 
     int la = numOfDigits(a), lb = numOfDigits(b);
-    // if (a == 5314) printf("\n- %d %d", la, lb);
-
     if (lb - la <= 1) {
         bool flag = false;
         int ta = a, tb = b, ma, mb;
@@ -30,6 +30,8 @@ bool isValidSuccessor(int a, int b) {
             if (ma != mb) {
                 if (!flag) {
                     flag = true;
+                    // if <b> is longer than <a>,
+                    // move to next digit of <b> and compare again
                     if (la + 1 == lb) {
                         tb /= 10;
                         mb = tb % 10;
@@ -61,12 +63,15 @@ int main() {
     }
     printf("\n");
 
+    // build up edges
     for (int i = 0; i < n; i++) {
         Vertex va = getVertexData(g, i);
         printf("%d:", va);
         for (int j = 0; j < n; j++) {
             Vertex vb = getVertexData(g, j);
+
             if (isValidSuccessor(va, vb)) {
+                // edge exist from vertex <i> to <j>
                 Edge new;
                 new.v = i;
                 new.w = j;
@@ -80,19 +85,20 @@ int main() {
     }
     printf("\n");
 
-    // showGraph(g);
-
-    // int maxLen = 0, maxStart;
+    // array storing maximum trail lengths starting from each vertex
     int *maxLenRecords = calloc(n, sizeof(int));
+    // maximum trail length
     int maxLen = 0;
+
     for (int i = 0; i < n; i++) {
         maxLenRecords[i] = maxLenFrom(g, i);
         if (maxLenRecords[i] > maxLen) maxLen = maxLenRecords[i];
     }
+
     printf("Maximum trail length: %d\n", maxLen);
     printf("Longest trail(s):\n");
-
     for (int i = 0; i < n; i++) {
+        // display all trails with length of <maxLen>
         if (maxLenRecords[i] == maxLen) showListOfLen(g, i, 0, maxLen, NULL);
     }
 

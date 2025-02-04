@@ -13,7 +13,9 @@ typedef struct GraphRep {
                   // 0 if nodes not adjacent
     int nV;       // #vertices
     int nE;       // #edges
+    // store adjacency list for efficient trails searching
     int **adjList;
+    // vertices data value (id=>value)
     Vertex *vertices;
 } GraphRep;
 
@@ -34,11 +36,11 @@ Graph newGraph(int V) {
     for (i = 0; i < V; i++) {
         g->edges[i] = calloc(V, sizeof(int));
         assert(g->edges[i] != NULL);
-        // g->vertices[i] = NULL;
+
         g->adjList[i] = calloc(V + 1, sizeof(int));
         assert(g->adjList[i]);
-        // g->adjList[i][0]
     }
+
     g->vertices = malloc(sizeof(Vertex) * V);
     assert(g->vertices);
 
@@ -98,8 +100,10 @@ void freeGraph(Graph g) {
     free(g);
 }
 
+// add vertex data to array
 void insertVertex(Graph g, int id, Vertex v) { g->vertices[id] = v; }
 
+// return id of vertex with value <v>
 int getVertexID(Graph g, Vertex v) {
     for (int i = 0; i < g->nV; i++) {
         if (g->vertices[i] == v) return v;
@@ -107,59 +111,48 @@ int getVertexID(Graph g, Vertex v) {
     return -1;
 }
 
+// return value of vertex with id <id>
+
 int getVertexData(Graph g, int id) {
     if (id >= g->nV) return -1;
     return g->vertices[id];
 }
 
+// insert adjacency info into adjacency list
 void insertAdjList(Graph g, Edge e) {
     if (e.weight <= 0) return;
     g->adjList[e.v][g->adjList[e.v][0] + 1] = e.w;
     g->adjList[e.v][0]++;
 }
 
+// return maximum trail length starting from vertex with id <id>
 int maxLenFrom(Graph g, int id) {
     if (g->adjList[id][0] == 0) return 1;
     int maxLen = 1, t = 0;
     for (int i = 0; i < g->adjList[id][0]; i++) {
-        // for (int j = 0; j < g->adjList[i][0]; j++) {
         t = maxLenFrom(g, g->adjList[id][i + 1]);
         if (maxLen < 1 + t) {
             maxLen = 1 + t;
         }
-        // }
     }
     return maxLen;
 }
 
+// display trails of length of <len> starting from vertex with id <id>
 void showListOfLen(Graph g, int id, int len, int targetLen, List ll) {
-    // printf("- %d\n", id);
     if (len + 1 == targetLen) {
         showTrail(appendLL(ll, g->vertices[id]));
         deleteLL(ll, g->vertices[id]);
         return;
     }
-    // printf("probe 1\n");
 
     if (g->adjList[id][0] == 0) {
-        // freeLL(ll);
         return;
     };
-    // List new
-    // printf("probe 2\n");
 
     for (int i = 0; i < g->adjList[id][0]; i++) {
-        // printf("probe 3\n");
-
-        // for (int j = 0; j < g->adjList[i][0]; j++) {
-        // printf("%d\n", g->adjList[id][i + 1]);
         List new = appendLL(ll, g->vertices[id]);
-        // printf("%d\n", );
-
         showListOfLen(g, g->adjList[id][i + 1], len + 1, targetLen, new);
-        // }
-        // printf("probe 4\n");
         deleteLL(new, g->vertices[id]);
     }
-    // return maxLen;
 }
