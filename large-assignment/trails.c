@@ -1,4 +1,21 @@
-/* … */
+/*------------------------------------------------------------------------
+Complexity Analysis
+    Total worst-case complexity: O(n² log a)
+    |   Task 1: O(n² log a)
+    |   |   Graph Initialization: O(n)
+    |   |   Vertices Insertion: O(n)
+    |   |   Nested loop over all pairs (i, j) O(n²) times: O(n² log a)
+    |   |   |   isValidSuccessor: O(log a)
+    |   |   |   |   numOfDigits: O(log a)
+    |   |   |   |   |   *Each iteration reduces a by a factor of 10.
+    |   |   |   |   Iterates through the digits of a and b: O(log a)
+    |   Task 2: O(n²)
+    |   |   maxLenFrom: O(n²)
+    |   |   |   *O(n) for each call, and it's called for all n vertices.
+    |   |   showListOfLen: O(n²)
+    |   |   |   *O(n) for each call, and it's called for all n vertices.
+
+------------------------------------------------------------------------*/
 
 #include <stdbool.h>
 #include <stdio.h>
