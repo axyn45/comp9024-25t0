@@ -19,6 +19,7 @@ bool isValidSuccessor(int a, int b) {
     if (a >= b) return false;
 
     int la = numOfDigits(a), lb = numOfDigits(b);
+    // if (a == 5314) printf("\n- %d %d", la, lb);
 
     if (lb - la <= 1) {
         bool flag = false;
@@ -29,7 +30,11 @@ bool isValidSuccessor(int a, int b) {
             if (ma != mb) {
                 if (!flag) {
                     flag = true;
-                    if (la + 1 == lb) tb /= 10;
+                    if (la + 1 == lb) {
+                        tb /= 10;
+                        mb = tb % 10;
+                        if (ma != mb) return false;
+                    }
                 } else
                     return false;
             }
@@ -88,7 +93,7 @@ int main() {
     printf("Longest trail(s):\n");
 
     for (int i = 0; i < n; i++) {
-        if (maxLenRecords[i] == maxLen) showListOfLen(g, i, 0, 3, NULL);
+        if (maxLenRecords[i] == maxLen) showListOfLen(g, i, 0, maxLen, NULL);
     }
 
     freeGraph(g);
