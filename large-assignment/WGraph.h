@@ -1,15 +1,10 @@
-#include "List.h"
-
 // Weighted Graph ADT interface ... COMP9024 25T0
+#include "List.h"
 
 typedef struct GraphRep *Graph;
 
 // vertices are ints
 typedef int Vertex;
-
-// typedef struct Vertex {
-//     int data;
-// } Vertex;
 
 // edges are pairs of vertices (end-points) with a weight
 typedef struct Edge {
@@ -19,11 +14,11 @@ typedef struct Edge {
 } Edge;
 
 Graph newGraph(int);
-int numOfVertices(Graph);
-void insertEdge(Graph, Edge);
-void removeEdge(Graph, Edge);
-int adjacent(Graph, int, int);  // returns weight, or 0 if not adjacent
-void showGraph(Graph);
+// int numOfVertices(Graph);
+// void insertEdge(Graph, Edge);
+// void removeEdge(Graph, Edge);
+// int adjacent(Graph, int, int);  // returns weight, or 0 if not adjacent
+// void showGraph(Graph);
 void freeGraph(Graph);
 void insertVertex(Graph, int, Vertex);
 int getVertexID(Graph, Vertex);
