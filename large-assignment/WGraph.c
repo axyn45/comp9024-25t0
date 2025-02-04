@@ -13,10 +13,9 @@ typedef struct GraphRep {
                   // 0 if nodes not adjacent
     int nV;       // #vertices
     int nE;       // #edges
-    // store adjacency list for efficient trails searching
-    int **adjList;
-    // vertices data value (id=>value)
-    Vertex *vertices;
+
+    int **adjList;     // store adjacency list for efficient trails searching
+    Vertex *vertices;  // vertices data value (id=>value)
 } GraphRep;
 
 Graph newGraph(int V) {
@@ -37,6 +36,8 @@ Graph newGraph(int V) {
         g->edges[i] = calloc(V, sizeof(int));
         assert(g->edges[i] != NULL);
 
+        // first element of each adjList
+        // indicates the length of the list
         g->adjList[i] = calloc(V + 1, sizeof(int));
         assert(g->adjList[i]);
     }
@@ -112,7 +113,6 @@ int getVertexID(Graph g, Vertex v) {
 }
 
 // return value of vertex with id <id>
-
 int getVertexData(Graph g, int id) {
     if (id >= g->nV) return -1;
     return g->vertices[id];
@@ -140,12 +140,15 @@ int maxLenFrom(Graph g, int id) {
 
 // display trails of length of <len> starting from vertex with id <id>
 void showListOfLen(Graph g, int id, int len, int targetLen, List ll) {
+    // terminate if <len+1> reaches <targetLen>
     if (len + 1 == targetLen) {
         showTrail(appendLL(ll, g->vertices[id]));
+        // free last appended node
         deleteLL(ll, g->vertices[id]);
         return;
     }
 
+    // terminate if no adjacent vertices found
     if (g->adjList[id][0] == 0) {
         return;
     };
@@ -153,6 +156,7 @@ void showListOfLen(Graph g, int id, int len, int targetLen, List ll) {
     for (int i = 0; i < g->adjList[id][0]; i++) {
         List new = appendLL(ll, g->vertices[id]);
         showListOfLen(g, g->adjList[id][i + 1], len + 1, targetLen, new);
+        // free last appended node
         deleteLL(new, g->vertices[id]);
     }
 }

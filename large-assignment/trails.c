@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// #include "List.h"
 #include "WGraph.h"
 
 // return number of digits of <a>
@@ -104,3 +103,11 @@ int main() {
 
     freeGraph(g);
 }
+
+/* debug command
+gcc -Wall -Werror -std=c11 -c List.c;
+gcc -Wall -Werror -std=c11 -c WGraph.c;
+gcc -Wall -Werror -std=c11 -c trails.c;
+gcc -Wall -Werror -std=c11 -o trails trails.o WGraph.o List.o;
+./trails
+*/
