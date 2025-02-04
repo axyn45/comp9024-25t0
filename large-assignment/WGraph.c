@@ -36,7 +36,7 @@ Graph newGraph(int V) {
         assert(g->edges[i] != NULL);
         // g->vertices[i] = NULL;
         g->adjList[i] = calloc(V + 1, sizeof(int));
-        assert(g->vertices);
+        assert(g->adjList[i]);
         // g->adjList[i][0]
     }
     g->vertices = malloc(sizeof(Vertex) * V);
@@ -136,13 +136,13 @@ void showListOfLen(Graph g, int id, int len, int targetLen, List ll) {
     // printf("- %d\n", id);
     if (len + 1 == targetLen) {
         showTrail(appendLL(ll, g->vertices[id]));
-        freeLL(ll);
+        deleteLL(ll, g->vertices[id]);
         return;
     }
     // printf("probe 1\n");
 
     if (g->adjList[id][0] == 0) {
-        freeLL(ll);
+        // freeLL(ll);
         return;
     };
     // List new
@@ -159,6 +159,7 @@ void showListOfLen(Graph g, int id, int len, int targetLen, List ll) {
         showListOfLen(g, g->adjList[id][i + 1], len + 1, targetLen, new);
         // }
         // printf("probe 4\n");
+        deleteLL(new, g->vertices[id]);
     }
     // return maxLen;
 }
