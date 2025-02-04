@@ -1,3 +1,5 @@
+#include "List.h"
+
 // Weighted Graph ADT interface ... COMP9024 25T0
 
 typedef struct GraphRep *Graph;
@@ -28,3 +30,4 @@ int getVertexID(Graph, Vertex);
 int getVertexData(Graph, int);
 void insertAdjList(Graph, Edge);
 int maxLenFrom(Graph, int);
+void showListOfLen(Graph g, int id, int len, int targetLen, List ll);

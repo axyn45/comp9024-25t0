@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "List.h"
+// #include "List.h"
 #include "WGraph.h"
 
 int numOfDigits(int a) {
@@ -78,8 +78,17 @@ int main() {
     // showGraph(g);
 
     // int maxLen = 0, maxStart;
+    int *maxLenRecords = calloc(n, sizeof(int));
+    int maxLen = 0;
     for (int i = 0; i < n; i++) {
-        printf("%d: %d\n", i, maxLenFrom(g, i));
+        maxLenRecords[i] = maxLenFrom(g, i);
+        if (maxLenRecords[i] > maxLen) maxLen = maxLenRecords[i];
+    }
+    printf("Maximum trail length: %d\n", maxLen);
+    printf("Longest trail(s):\n");
+
+    for (int i = 0; i < n; i++) {
+        if (maxLenRecords[i] == maxLen) showListOfLen(g, i, 0, 3, NULL);
     }
 
     freeGraph(g);

@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "List.h"
+
 typedef struct GraphRep {
     int **edges;  // adjacency matrix storing positive weights
                   // 0 if nodes not adjacent
@@ -128,4 +130,35 @@ int maxLenFrom(Graph g, int id) {
         // }
     }
     return maxLen;
+}
+
+void showListOfLen(Graph g, int id, int len, int targetLen, List ll) {
+    // printf("- %d\n", id);
+    if (len + 1 == targetLen) {
+        showTrail(appendLL(ll, g->vertices[id]));
+        freeLL(ll);
+        return;
+    }
+    // printf("probe 1\n");
+
+    if (g->adjList[id][0] == 0) {
+        freeLL(ll);
+        return;
+    };
+    // List new
+    // printf("probe 2\n");
+
+    for (int i = 0; i < g->adjList[id][0]; i++) {
+        // printf("probe 3\n");
+
+        // for (int j = 0; j < g->adjList[i][0]; j++) {
+        // printf("%d\n", g->adjList[id][i + 1]);
+        List new = appendLL(ll, g->vertices[id]);
+        // printf("%d\n", );
+
+        showListOfLen(g, g->adjList[id][i + 1], len + 1, targetLen, new);
+        // }
+        // printf("probe 4\n");
+    }
+    // return maxLen;
 }

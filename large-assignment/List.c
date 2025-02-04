@@ -62,3 +62,23 @@ void freeLL(List L) {
         free(L);
     }
 }
+
+List appendLL(List L, int n) {
+    if (!L) return makeNode(n);
+    List tail = L;
+    while (tail->next) tail = tail->next;
+    tail->next = makeNode(n);
+    return L;
+}
+
+void showTrail(List L) {
+    if (!L) return;
+    List t = L;
+    printf("%d", t->v);
+    t = t->next;
+    while (t) {
+        printf(" -> %d", t->v);
+        t = t->next;
+    }
+    printf("\n");
+}
