@@ -1,4 +1,5 @@
 /*------------------------------------------------------------------------
+
 Complexity Analysis
     Total worst-case complexity: O(n² log a)
     |   Task 1: O(n² log a)
@@ -122,7 +123,7 @@ int main() {
     freeGraph(g);
 }
 
-/* debug command
+/* debugging commands
 gcc -Wall -Werror -std=c11 -c List.c;
 gcc -Wall -Werror -std=c11 -c WGraph.c;
 gcc -Wall -Werror -std=c11 -c trails.c;

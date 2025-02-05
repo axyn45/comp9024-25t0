@@ -15,7 +15,7 @@ typedef struct GraphRep {
     int **adjList;     // Store adjacency list for efficient trails searching.
                        // First element of each adjList
                        // indicates the length of the list.
-    Vertex *vertices;  // Vertices data value (id=>value).
+    Vertex *vertices;  // Vertices data value.
 } GraphRep;
 
 Graph newGraph(int V) {
@@ -98,7 +98,8 @@ void showListOfLen(Graph g, int id, int len, int targetLen, List ll) {
         return;
     }
 
-    // Terminate if no adjacent vertices found.
+    // Terminate if no adjacent vertices found
+    // and targetLen is not yet reached.
     if (g->adjList[id][0] == 0) {
         return;
     };
